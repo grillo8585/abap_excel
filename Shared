@@ -6,6 +6,7 @@ NADI00C
 Inicio$123Ndg25*
 QAS
 Cambiarclave01#
+Cambiarclave01#
 
 BP
 RE80
@@ -48,6 +49,10 @@ vhprmfidci.hec.promigas.com
 QAS
 00
 vhprmqasci.hec.promigas.com
+24 HANA DEV Fiori
+FID
+00
+vhprmfidci.hec.promigas.com
 24 HANA Calidad Fiori
 FIQ
 00
