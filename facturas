@@ -1,0 +1,254 @@
+* segun la sociedad determinamos el nombre de la nota (notas 1 al 8)
+
+    CASE pbukrs.
+      WHEN 'C000'.
+        lv_linea-id = 'ST'. lv_linea-name = 'ZSD_C000_HEADER_GP2C016'. lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+        lv_linea-id = 'ST'. lv_linea-name = 'ZSD_C000_CTABCRIA_GP2C016'. lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+        CASE PCLASE.
+          WHEN 'ZCCO'.
+            lv_linea-id = 'ST'. lv_linea-name = 'ZSD_C000_FIJODOS_GP2C016'. lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+          WHEN 'ZNCR'.
+            lv_linea-id = 'ST'. lv_linea-name = 'ZSD_C000_FIJOCINCO_GP2C016'. lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+          WHEN 'ZNDB'.
+            lv_linea-id = 'ST'. lv_linea-name = 'ZSD_C000_FIJOCUATRO_GP2C016'. lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+          WHEN OTHERS.
+            lv_linea-id = 'ST'. lv_linea-name = 'ZSD_C000_FIJOUNO_GP2C016'. lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+        ENDCASE.
+        lv_linea-id = 'ST'. lv_linea-name = 'ZSD_C000_FIJOTRES_GP2C016'. lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+        CASE PCLASE.
+          WHEN 'ZNCR'.
+            lv_linea-id = 'ST'. lv_linea-name = 'ZSD_C000_AGENTE_RET_ND_NC'. lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+          WHEN 'ZNDB'.
+            lv_linea-id = 'ST'. lv_linea-name = 'ZSD_C000_AGENTE_RET_ND_NC'. lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+          WHEN OTHERS.
+            lv_linea-id = 'ST'. lv_linea-name = 'ZSD_C000_AGENTE_RET_G'. lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+        ENDCASE.
+      WHEN 'L000'.
+        lv_linea-id = 'ST'. lv_linea-name = 'ZSD_L000_HEADER_GP2C016'. lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+        lv_linea-id = 'ST'. lv_linea-name = 'ZSD_L000_CTABCRIA_GP2C016'. lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+        CASE PCLASE.
+          WHEN 'ZCCO'.
+            lv_linea-id = 'ST'. lv_linea-name = 'ZSD_L000_FIJODOS_GP2C016'. lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+          WHEN 'ZNCR'.
+            lv_linea-id = 'ST'. lv_linea-name = 'ZSD_L000_FIJOCINCO_GP2C016'. lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+          WHEN 'ZNDB'.
+            lv_linea-id = 'ST'. lv_linea-name = 'ZSD_L000_FIJOCUATRO_GP2C016'. lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+          WHEN OTHERS.
+            lv_linea-id = 'ST'. lv_linea-name = 'ZSD_L000_FIJOUNO_GP2C016'. lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+        ENDCASE.
+        lv_linea-id = 'ST'. lv_linea-name = 'ZSD_L000_FIJOTRES_GP2C016'. lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+        CASE PCLASE.
+          WHEN 'ZNCR'.
+            lv_linea-id = 'ST'. lv_linea-name = 'ZSD_L000_AGENTE_RET_ND_NC'. lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+          WHEN 'ZNCB'.
+            lv_linea-id = 'ST'. lv_linea-name = 'ZSD_L000_AGENTE_RET_ND_NC'. lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+          WHEN OTHERS.
+            lv_linea-id = 'ST'. lv_linea-name = 'ZSD_L000_AGENTE_RET_G'. lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+        ENDCASE.
+      WHEN 'M000'.
+        lv_linea-id = 'ST'. lv_linea-name = 'ZSD_M000_HEADER_GP2C016'. lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+        lv_linea-id = 'ST'. lv_linea-name = 'ZSD_M000_CTABCRIA_GP2C016'. lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+        CASE PCLASE.
+          WHEN 'ZCCO'.
+            lv_linea-id = 'ST'. lv_linea-name = 'ZSD_M000_FIJODOS_GP2C016'. lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+          WHEN 'ZNCR'.
+            lv_linea-id = 'ST'. lv_linea-name = 'ZSD_M000_FIJOCINCO_GP2C016'. lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+          WHEN 'ZNDB'.
+            lv_linea-id = 'ST'. lv_linea-name = 'ZSD_M000_FIJOCUATRO_GP2C016'. lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+          WHEN OTHERS.
+            lv_linea-id = 'ST'. lv_linea-name = 'ZSD_M000_FIJOUNO_GP2C016'. lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+        ENDCASE.
+        lv_linea-id = 'ST'. lv_linea-name = 'ZSD_M000_FIJOTRES_GP2C016'. lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+
+        CASE PCLASE.
+          WHEN 'ZF2'.
+            lv_linea-id = 'ST'. lv_linea-name = 'ZSD_M000_AGENTE_RET_G'. lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+          WHEN 'ZTGA'.
+            lv_linea-id = 'ST'. lv_linea-name = 'ZSD_M000_AGENTE_RET_T'. lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+          WHEN 'ZDGA'.
+            lv_linea-id = 'ST'. lv_linea-name = 'ZSD_M000_AGENTE_RET_D'. lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+          WHEN 'ZNCR'.
+            lv_linea-id = 'ST'. lv_linea-name = 'ZSD_M000_AGENTE_RET_ND_NC'. lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+          WHEN 'ZNDB'.
+            lv_linea-id = 'ST'. lv_linea-name = 'ZSD_M000_AGENTE_RET_ND_NC'. lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+        ENDCASE.
+      WHEN 'P000'.
+        lv_linea-id = 'ST'. lv_linea-name = 'ZSD_P000_HEADER_GP2C016'. lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+        lv_linea-id = 'ST'. lv_linea-name = 'ZSD_P000_CTABCRIA_GP2C016'. lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+        CASE PCLASE.
+          WHEN 'ZCCO'.
+            lv_linea-id = 'ST'. lv_linea-name = 'ZSD_P000_FIJODOS_GP2C016'. lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+          WHEN 'ZNCR'.
+            lv_linea-id = 'ST'. lv_linea-name = 'ZSD_P000_FIJOCINCO_GP2C016'. lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+          WHEN 'ZNDB'.
+            lv_linea-id = 'ST'. lv_linea-name = 'ZSD_P000_FIJOCUATRO_GP2C016'. lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+          WHEN OTHERS.
+            lv_linea-id = 'ST'. lv_linea-name = 'ZSD_P000_FIJOUNO_GP2C016'. lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+        ENDCASE.
+        lv_linea-id = 'ST'. lv_linea-name = 'ZSD_P000_FIJOTRES_GP2C016'. lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+
+        CASE PCLASE.
+          WHEN 'ZF2'.
+            lv_linea-id = 'ST'. lv_linea-name = 'ZSD_P000_AGENTE_RET_G'. lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+          WHEN 'ZTGA'.
+            lv_linea-id = 'ST'. lv_linea-name = 'ZSD_P000_AGENTE_RET_T'. lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+          WHEN 'ZDGA'.
+            lv_linea-id = 'ST'. lv_linea-name = 'ZSD_P000_AGENTE_RET_D'. lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+          WHEN 'ZNCR'.
+            lv_linea-id = 'ST'. lv_linea-name = 'ZSD_P000_AGENTE_RET_ND_NC'. lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+          WHEN 'ZNDB'.
+            lv_linea-id = 'ST'. lv_linea-name = 'ZSD_P000_AGENTE_RET_ND_NC'. lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+****%% begin of Insert jjri 30082023
+***         WHEN 'ZSGE'.
+***            lv_linea-id = 'ST'. lv_linea-name = 'ZSD_P000_AGENTE_RET_E'.    lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+***            lv_linea-id = 'ST'. lv_linea-name = 'ZSD_P000_FIJOCUATRO_ZSGE'. lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+***            lv_linea-id = 'ST'. lv_linea-name = 'ZSD_P000_FIJOCINCO_ZSGE'.  lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+***            lv_linea-id = 'ST'. lv_linea-name = 'ZSD_M000_CTABCRIA_ZSGE'.   lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+****%% End of insert jjri 30082023
+        ENDCASE.
+      WHEN 'E000'.
+        lv_linea-id = 'ST'. lv_linea-name = 'ZSD_E000_HEADER_GP2C016'. lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+        lv_linea-id = 'ST'. lv_linea-name = 'ZSD_E000_CTABCRIA_GP2C016'. lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+        CASE PCLASE.
+          WHEN 'ZCCO'.
+            lv_linea-id = 'ST'. lv_linea-name = 'ZSD_E000_FIJODOS_GP2C016'. lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+          WHEN 'ZNCR'.
+            lv_linea-id = 'ST'. lv_linea-name = 'ZSD_E000_FIJOCINCO_GP2C016'. lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+          WHEN 'ZNDB'.
+            lv_linea-id = 'ST'. lv_linea-name = 'ZSD_E000_FIJOCUATRO_GP2C016'. lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+          WHEN OTHERS.
+            lv_linea-id = 'ST'. lv_linea-name = 'ZSD_E000_FIJOUNO_GP2C016'. lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+        ENDCASE.
+        lv_linea-id = 'ST'. lv_linea-name = 'ZSD_E000_FIJOTRES_GP2C016'. lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+        CASE PCLASE.
+          WHEN 'ZNCR'.
+            lv_linea-id = 'ST'. lv_linea-name = 'ZSD_E000_AGENTE_RET_ND_NC'. lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+          WHEN 'ZNDB'.
+            lv_linea-id = 'ST'. lv_linea-name = 'ZSD_E000_AGENTE_RET_ND_NC'. lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+          WHEN OTHERS.
+            lv_linea-id = 'ST'. lv_linea-name = 'ZSD_E000_AGENTE_RET_G'. lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+        ENDCASE.
+      WHEN 'O000'.
+        lv_linea-id = 'ST'. lv_linea-name = 'ZSD_O000_HEADER_GP2C016'. lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+        lv_linea-id = 'ST'. lv_linea-name = 'ZSD_O000_CTABCRIA_GP2C016'. lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+        CASE PCLASE.
+          WHEN 'ZCCO'.
+            lv_linea-id = 'ST'. lv_linea-name = 'ZSD_O000_FIJODOS_GP2C016'. lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+          WHEN 'ZNCR'.
+            lv_linea-id = 'ST'. lv_linea-name = 'ZSD_O000_FIJOCINCO_GP2C016'. lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+          WHEN 'ZNDB'.
+            lv_linea-id = 'ST'. lv_linea-name = 'ZSD_O000_FIJOCUATRO_GP2C016'. lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+          WHEN OTHERS.
+            lv_linea-id = 'ST'. lv_linea-name = 'ZSD_O000_FIJOUNO_GP2C016'. lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+        ENDCASE.
+        lv_linea-id = 'ST'. lv_linea-name = 'ZSD_O000_FIJOTRES_GP2C016'. lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+
+        CASE PCLASE.
+          WHEN 'ZF2'.
+            lv_linea-id = 'ST'. lv_linea-name = 'ZSD_O000_AGENTE_RET_G'. lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+          WHEN 'ZTGA'.
+            lv_linea-id = 'ST'. lv_linea-name = 'ZSD_O000_AGENTE_RET_T'. lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+          WHEN 'ZDGA'.
+            lv_linea-id = 'ST'. lv_linea-name = 'ZSD_O000_AGENTE_RET_D'. lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+           WHEN 'ZNCR'.
+            lv_linea-id = 'ST'. lv_linea-name = 'ZSD_O000_AGENTE_RET_ND_NC'. lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+          WHEN 'ZNDB'.
+            lv_linea-id = 'ST'. lv_linea-name = 'ZSD_O000_AGENTE_RET_ND_NC'. lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+        ENDCASE.
+      WHEN 'T000'.
+        lv_linea-id = 'ST'. lv_linea-name = 'ZSD_T000_HEADER_GP2C016'. lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+        lv_linea-id = 'ST'. lv_linea-name = 'ZSD_T000_CTABCRIA_GP2C016'. lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+        CASE PCLASE.
+          WHEN 'ZCCO'.
+            lv_linea-id = 'ST'. lv_linea-name = 'ZSD_T000_FIJODOS_GP2C016'. lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+          WHEN 'ZNCR'.
+            lv_linea-id = 'ST'. lv_linea-name = 'ZSD_T000_FIJOCINCO_GP2C016'. lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+          WHEN 'ZNDB'.
+            lv_linea-id = 'ST'. lv_linea-name = 'ZSD_T000_FIJOCUATRO_GP2C016'. lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+          WHEN OTHERS.
+            lv_linea-id = 'ST'. lv_linea-name = 'ZSD_T000_FIJOUNO_GP2C016'. lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+        ENDCASE.
+        lv_linea-id = 'ST'. lv_linea-name = 'ZSD_T000_FIJOTRES_GP2C016'. lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+
+        CASE PCLASE.
+          WHEN 'ZF2'.
+            lv_linea-id = 'ST'. lv_linea-name = 'ZSD_T000_AGENTE_RET_G'. lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+          WHEN 'ZTGA'.
+            lv_linea-id = 'ST'. lv_linea-name = 'ZSD_T000_AGENTE_RET_T'. lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+          WHEN 'ZDGA'.
+            lv_linea-id = 'ST'. lv_linea-name = 'ZSD_T000_AGENTE_RET_D'. lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+          WHEN 'ZNCR'.
+            lv_linea-id = 'ST'. lv_linea-name = 'ZSD_T000_AGENTE_RET_ND_NC'. lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+          WHEN 'ZNDB'.
+            lv_linea-id = 'ST'. lv_linea-name = 'ZSD_T000_AGENTE_RET_ND_NC'. lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+        ENDCASE.
+      WHEN 'Z000'.
+        lv_linea-id = 'ST'. lv_linea-name = 'ZSD_Z000_HEADER_GP2C016'. lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+        lv_linea-id = 'ST'. lv_linea-name = 'ZSD_Z000_CTABCRIA_GP2C016'. lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+        CASE PCLASE.
+          WHEN 'ZCCO'.
+            lv_linea-id = 'ST'. lv_linea-name = 'ZSD_Z000_FIJODOS_GP2C016'. lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+          WHEN 'ZNCR'.
+            lv_linea-id = 'ST'. lv_linea-name = 'ZSD_Z000_FIJOCINCO_GP2C016'. lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+          WHEN 'ZNDB'.
+            lv_linea-id = 'ST'. lv_linea-name = 'ZSD_Z000_FIJOCUATRO_GP2C016'. lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+          WHEN OTHERS.
+            lv_linea-id = 'ST'. lv_linea-name = 'ZSD_Z000_FIJOUNO_GP2C016'. lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+        ENDCASE.
+        lv_linea-id = 'ST'. lv_linea-name = 'ZSD_Z000_FIJOTRES_GP2C016'. lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+        CASE PCLASE.
+          WHEN 'ZF2'.
+            lv_linea-id = 'ST'. lv_linea-name = 'ZSD_Z000_AGENTE_RET_G'. lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+          WHEN 'ZNCR'.
+            lv_linea-id = 'ST'. lv_linea-name = 'ZSD_Z000_AGENTE_RET_ND_NC'. lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+          WHEN 'ZNDB'.
+            lv_linea-id = 'ST'. lv_linea-name = 'ZSD_Z000_AGENTE_RET_GD_NC'. lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+          WHEN OTHERS.
+            lv_linea-id = 'ST'. lv_linea-name = 'ZSD_Z000_AGENTE_RET_ZGEN'. lv_linea-object = 'TEXT'. append lv_linea to lv_tabla.
+        ENDCASE.
+    ENDCASE.
+
+    MOVE pnumero TO lv_nombre.     " NUMERO DEL DOCUMENTO
+    CASE PCLASE.
+      WHEN 'ZF2'.
+        lv_linea-id = 'TX06'. lv_linea-name = lv_nombre. lv_linea-object = 'VBBK'. append lv_linea to lv_tabla.
+        lv_linea-id = 'Z004'. lv_linea-name = lv_nombre. lv_linea-object = 'VBBK'. append lv_linea to lv_tabla.
+      WHEN 'ZCCO'.
+        lv_linea-id = 'TX06'. lv_linea-name = lv_nombre. lv_linea-object = 'VBBK'. append lv_linea to lv_tabla.
+        lv_linea-id = 'Z004'. lv_linea-name = lv_nombre. lv_linea-object = 'VBBK'. append lv_linea to lv_tabla. "tasa de cambio
+      WHEN 'ZTGA'.
+        lv_linea-id = 'TX06'. lv_linea-name = lv_nombre. lv_linea-object = 'VBBK'. append lv_linea to lv_tabla.
+        lv_linea-id = 'Z001'. lv_linea-name = lv_nombre. lv_linea-object = 'VBBK'. append lv_linea to lv_tabla.
+        lv_linea-id = 'Z002'. lv_linea-name = lv_nombre. lv_linea-object = 'VBBK'. append lv_linea to lv_tabla.
+        lv_linea-id = 'Z003'. lv_linea-name = lv_nombre. lv_linea-object = 'VBBK'. append lv_linea to lv_tabla.
+        lv_linea-id = 'Z004'. lv_linea-name = lv_nombre. lv_linea-object = 'VBBK'. append lv_linea to lv_tabla. "tasa de cambio
+        lv_linea-id = 'Z005'. lv_linea-name = lv_nombre. lv_linea-object = 'VBBK'. append lv_linea to lv_tabla.
+        lv_linea-id = 'Z006'. lv_linea-name = lv_nombre. lv_linea-object = 'VBBK'. append lv_linea to lv_tabla.
+        lv_linea-id = 'Z007'. lv_linea-name = lv_nombre. lv_linea-object = 'VBBK'. append lv_linea to lv_tabla.
+        lv_linea-id = 'Z008'. lv_linea-name = lv_nombre. lv_linea-object = 'VBBK'. append lv_linea to lv_tabla.
+      WHEN 'ZDGA'.
+        lv_linea-id = 'TX06'. lv_linea-name = lv_nombre. lv_linea-object = 'VBBK'. append lv_linea to lv_tabla.
+        lv_linea-id = 'Z009'. lv_linea-name = lv_nombre. lv_linea-object = 'VBBK'. append lv_linea to lv_tabla.
+        lv_linea-id = 'Z010'. lv_linea-name = lv_nombre. lv_linea-object = 'VBBK'. append lv_linea to lv_tabla.
+        lv_linea-id = 'Z011'. lv_linea-name = lv_nombre. lv_linea-object = 'VBBK'. append lv_linea to lv_tabla.
+        lv_linea-id = 'Z004'. lv_linea-name = lv_nombre. lv_linea-object = 'VBBK'. append lv_linea to lv_tabla. "tasa de cambio
+        lv_linea-id = 'Z012'. lv_linea-name = lv_nombre. lv_linea-object = 'VBBK'. append lv_linea to lv_tabla.
+        lv_linea-id = 'Z013'. lv_linea-name = lv_nombre. lv_linea-object = 'VBBK'. append lv_linea to lv_tabla.
+        lv_linea-id = 'Z014'. lv_linea-name = lv_nombre. lv_linea-object = 'VBBK'. append lv_linea to lv_tabla.
+      WHEN 'ZNCR'.  " NOTAS DE CREDITO
+        lv_linea-id = 'TX06'. lv_linea-name = lv_nombre. lv_linea-object = 'VBBK'. append lv_linea to lv_tabla.
+        lv_linea-id = 'Z004'. lv_linea-name = lv_nombre. lv_linea-object = 'VBBK'. append lv_linea to lv_tabla.
+        lv_linea-id = 'Z107'. lv_linea-name = lv_nombre. lv_linea-object = 'VBBK'. append lv_linea to lv_tabla.   " EDD-01 - Fecha inicio
+        lv_linea-id = 'Z108'. lv_linea-name = lv_nombre. lv_linea-object = 'VBBK'. append lv_linea to lv_tabla.   " EDD-01 - FEcha fin
+      WHEN 'ZNDB'.  " NOTAS DE DEBITO
+        lv_linea-id = 'TX06'. lv_linea-name = lv_nombre. lv_linea-object = 'VBBK'. append lv_linea to lv_tabla.
+        lv_linea-id = 'Z004'. lv_linea-name = lv_nombre. lv_linea-object = 'VBBK'. append lv_linea to lv_tabla.
+        lv_linea-id = 'Z107'. lv_linea-name = lv_nombre. lv_linea-object = 'VBBK'. append lv_linea to lv_tabla.   " EDD-01 - Fecha inicio
+        lv_linea-id = 'Z108'. lv_linea-name = lv_nombre. lv_linea-object = 'VBBK'. append lv_linea to lv_tabla.   " EDD-01 - Fecha fin
+      WHEN 'S1'.
+        lv_linea-id = 'TX06'. lv_linea-name = lv_nombre. lv_linea-object = 'VBBK'. append lv_linea to lv_tabla.
+        lv_linea-id = 'Z004'. lv_linea-name = lv_nombre. lv_linea-object = 'VBBK'. append lv_linea to lv_tabla.
+        lv_linea-id = 'Z107'. lv_linea-name = lv_nombre. lv_linea-object = 'VBBK'. append lv_linea to lv_tabla.   " EDD-01 - Fecha inicio
+        lv_linea-id = 'Z108'. lv_linea-name = lv_nombre. lv_linea-object = 'VBBK'. append lv_linea to lv_tabla.   " EDD-01 - Fecha fin
+*&&Begin of insert jjri 29.08.2023 NOTAS
+      WHEN 'ZSGE'.
