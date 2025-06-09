@@ -84,14 +84,23 @@ vhprmdevci.hec.promigas.com
 01. ECC DESARROLLO
 10.48.50.12
 
-DEVK909655       DAHE00C      GAP 011
-DEVK909614       DAHE00C      GAP012
-DEVK909477       DAHE00C      Fiorizar Apps
-DEVK909475       DAHE00C      GAP006
-DEVK909291       DAHE00C      GAP07
-DEVK909272       DAHE00C      GAP02
-DEVK909260       GARO00C      RE: Facturación Electrónica
+CONCATENATE oreg lv_tab '<FctConvCop></FctConvCop> ' lv_crlf into oreg
+CONCATENATE oreg lv_tab '<MonedaCop></MonedaCop> ' lv_crlf into oreg
+CONCATENATE oreg lv_tab '<SubTotalCop></SubTotalCop> ' lv_crlf into oreg
+CONCATENATE oreg lv_tab '<DescuentoDetalleCop></DescuentoDetalleCop> ' lv_crlf into oreg
+CONCATENATE oreg lv_tab '<RecargoDetalleCop></RecargoDetalleCop> ' lv_crlf into oreg
+CONCATENATE oreg lv_tab '<TotalBrutoFacturaCop></TotalBrutoFacturaCop> ' lv_crlf into oreg
+CONCATENATE oreg lv_tab '<TotIvaCop></TotIvaCop> ' lv_crlf into oreg
+CONCATENATE oreg lv_tab '<TotIncCop></TotIncCop> ' lv_crlf into oreg
+CONCATENATE oreg lv_tab '<TotBolCop></TotBolCop> ' lv_crlf into oreg
+CONCATENATE oreg lv_tab '<ImpOtroCop></ImpOtroCop> ' lv_crlf into oreg
+CONCATENATE oreg lv_tab '<MntImpCop></MntImpCop> ' lv_crlf into oreg
+CONCATENATE oreg lv_tab '<TotalNetoFacturaCop></TotalNetoFacturaCop> ' lv_crlf into oreg
+CONCATENATE oreg lv_tab '<MntDctoCop></MntDctoCop> ' lv_crlf into oreg
+CONCATENATE oreg lv_tab '<MntRcgoCop></MntRcgoCop> ' lv_crlf into oreg
+CONCATENATE oreg lv_tab '<VlrPagarCop></VlrPagarCop> ' lv_crlf into oreg
+CONCATENATE oreg lv_tab '<ReteFueCop></ReteFueCop> ' lv_crlf into oreg
+CONCATENATE oreg lv_tab '<ReteIvaCop></ReteIvaCop> ' lv_crlf into oreg
+CONCATENATE oreg lv_tab '<ReteIcaCop></ReteIcaCop> ' lv_crlf into oreg
+CONCATENATE oreg lv_tab '<TotAnticiposCop></TotAnticiposCop> ' lv_crlf into oreg
 
-DEVK909326       GARO00C      RE:Documentos aprobados para pagos
-DEVK909444       GARO00C      FIRE: Bloqueo Pago Contabilización
-DEVK909260       GARO00C      RE: Facturación Electrónica
