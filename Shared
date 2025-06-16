@@ -84,23 +84,485 @@ vhprmdevci.hec.promigas.com
 01. ECC DESARROLLO
 10.48.50.12
 
-CONCATENATE oreg lv_tab '<FctConvCop></FctConvCop> ' lv_crlf into oreg
-CONCATENATE oreg lv_tab '<MonedaCop></MonedaCop> ' lv_crlf into oreg
-CONCATENATE oreg lv_tab '<SubTotalCop></SubTotalCop> ' lv_crlf into oreg
-CONCATENATE oreg lv_tab '<DescuentoDetalleCop></DescuentoDetalleCop> ' lv_crlf into oreg
-CONCATENATE oreg lv_tab '<RecargoDetalleCop></RecargoDetalleCop> ' lv_crlf into oreg
-CONCATENATE oreg lv_tab '<TotalBrutoFacturaCop></TotalBrutoFacturaCop> ' lv_crlf into oreg
-CONCATENATE oreg lv_tab '<TotIvaCop></TotIvaCop> ' lv_crlf into oreg
-CONCATENATE oreg lv_tab '<TotIncCop></TotIncCop> ' lv_crlf into oreg
-CONCATENATE oreg lv_tab '<TotBolCop></TotBolCop> ' lv_crlf into oreg
-CONCATENATE oreg lv_tab '<ImpOtroCop></ImpOtroCop> ' lv_crlf into oreg
-CONCATENATE oreg lv_tab '<MntImpCop></MntImpCop> ' lv_crlf into oreg
-CONCATENATE oreg lv_tab '<TotalNetoFacturaCop></TotalNetoFacturaCop> ' lv_crlf into oreg
-CONCATENATE oreg lv_tab '<MntDctoCop></MntDctoCop> ' lv_crlf into oreg
-CONCATENATE oreg lv_tab '<MntRcgoCop></MntRcgoCop> ' lv_crlf into oreg
-CONCATENATE oreg lv_tab '<VlrPagarCop></VlrPagarCop> ' lv_crlf into oreg
-CONCATENATE oreg lv_tab '<ReteFueCop></ReteFueCop> ' lv_crlf into oreg
-CONCATENATE oreg lv_tab '<ReteIvaCop></ReteIvaCop> ' lv_crlf into oreg
-CONCATENATE oreg lv_tab '<ReteIcaCop></ReteIcaCop> ' lv_crlf into oreg
-CONCATENATE oreg lv_tab '<TotAnticiposCop></TotAnticiposCop> ' lv_crlf into oreg
+*&---------------------------------------------------------------------*
+*& Include          ZRE_CARGA_CONSUMO_CONTRATO_CLI
+*&---------------------------------------------------------------------*
+class lcl_carga_consumo implementation.
 
+* <SIGNATURE>---------------------------------------------------------------------------------------+
+* | Instance Public Method lcl_carga_consumo->CONSTRUCTOR
+* +-------------------------------------------------------------------------------------------------+
+* | [--->] I_BUKRS                        TYPE        recn_contract-bukrs
+* | [--->] I_RECNNR                        TYPE        recn_contract-recnnr
+* | [--->] I_FILE                         TYPE        LOCALFILE
+* | [--->] I_BATCH                        TYPE        SY-BATCH
+* +--------------------------------------------------------------------------------------</SIGNATURE>
+  method constructor.
+    me->gv_bukrs = i_bukrs.
+    me->gv_recnnr = i_recnnr.
+*    me->create_ref_cont( ).
+    me->gv_batch = i_batch.
+  endmethod.
+
+  method f4_file.
+    data: lv_desktop  type string,
+          lv_wind_tit type string,
+          lt_files    type filetable,
+          lv_rcode    type int4.
+
+    call method cl_gui_frontend_services=>get_desktop_directory
+      changing
+        desktop_directory    = lv_desktop
+      exceptions
+        cntl_error           = 1
+        error_no_gui         = 2
+        not_supported_by_gui = 3
+        others               = 4.
+    if sy-subrc <> 0.
+      message e001(00) with text-002.
+    endif.
+
+    call method cl_gui_cfw=>update_view
+      exceptions
+        cntl_system_error = 1
+        cntl_error        = 2
+        others            = 3.
+
+    lv_wind_tit = text-003.
+
+    call method cl_gui_frontend_services=>file_open_dialog
+      exporting
+        window_title            = lv_wind_tit
+        default_extension       = '.xls'
+        file_filter             = '.xls'
+        initial_directory       = lv_desktop
+      changing
+        file_table              = lt_files
+        rc                      = lv_rcode
+      exceptions
+        file_open_dialog_failed = 1
+        cntl_error              = 2
+        error_no_gui            = 3
+        not_supported_by_gui    = 4
+        others                  = 5.
+    if sy-subrc <> 0.
+      message e001(00) with text-004.
+    endif.
+
+    read table lt_files index 1 into data(ls_files).
+    if sy-subrc eq 0.
+*      me->gv_localfile = ls_files-filename.
+      r_localfile      = ls_files-filename.
+    else.
+      message i001(00) with text-005.
+    endif.
+
+  endmethod.
+
+  method set_file.
+    me->gv_localfile = i_file.
+  endmethod.
+
+  method upload_excel.
+    data(lo_excel_handler) = new zcl_excel_handler( ).
+    lo_excel_handler->upload_xlsx(
+    exporting
+     iv_file_path = conv #( me->gv_localfile )
+     iv_server    = abap_false
+     ir_table     = ref #( gt_excel ) ).
+    validate_excel( ).
+  endmethod.
+  method start_of_selection.
+    if me->gv_batch eq abap_true.
+      me->upload_excel( ).
+      me->process_in_job( ).
+    else.
+      if sy-batch ne abap_true.
+        me->upload_excel( ).
+      endif.
+      if me->gt_return is initial.
+        loop at gt_excel into data(ls_excel) group by ( bukrs = ls_excel-bukrs
+                                                        recnnr = ls_excel-recnnr
+                                                         ).
+          gv_bukrs = ls_excel-bukrs.
+          gv_recnnr = ls_excel-recnnr.
+          me->get_data_resrrp( i_ttype = '02' ).
+          if me->gt_list is not initial.
+
+            me->call_bapi(
+              exporting
+                i_bukrs  = et_vicncn-bukrs
+                i_recnnr = et_vicncn-recnnr
+            ).
+            refresh: me->gt_list.
+            me->get_data_resrrp( ).
+*          me->display_data( ).
+          else.
+*          message i001(00) with text-006.
+          endif.
+        endloop.
+        me->show_log( i_t_return = gt_return ).
+        me->display_data( ).
+      else.
+        me->show_log( i_t_return = me->gt_return ).
+      endif.
+    endif.
+  endmethod.
+  method get_data_resrrp.
+    data:         "grid data (buffered for all pbo/pai-processing)
+**********************************************************************
+      go_cn       type ref to if_recn_contract,
+      gto_cn      type re_t_if_recn_contract,
+      gd_activity type reca1_activity,
+      gf_enqueue  type abap_bool,
+      lt_listx    type re_t_report_x.
+    gd_activity = '03'.
+
+    select single *
+              into @et_vicncn
+              from vicncn
+              where bukrs       eq @gv_bukrs
+                 and recnnr     eq @gv_recnnr.
+
+    call method cf_resr_contract=>find_by_intreno
+      exporting
+        id_intreno    = et_vicncn-intreno
+        id_activity   = gd_activity
+        if_auth_check = abap_false
+        if_enqueue    = abap_false
+      receiving
+        ro_instance   = go_cn
+      exceptions
+        error         = 1
+        others        = 2.
+
+
+    insert go_cn into table gto_cn.
+
+    data:
+      lo_report_mngr  type ref to  if_resr_report_multiple_mngr,
+      lt_rsosalestype type re_t_rsosalestype,
+      ls_rsosalestype like line of lt_rsosalestype,
+      lt_rhythm       type re_t_rhythmtype_x,
+      lo_msglist      type ref to if_reca_message_list.
+
+    call method cf_reca_message_list=>create
+      receiving
+        ro_instance = lo_msglist.
+    call method cf_resr_report_multiple_mngr=>find_by_list
+      exporting
+        ito_contract    = gto_cn
+*       IT_RSOTERMNO    =
+        id_rhythmtype   = '0001' "<ls_rhythm>-rhythmtype
+        it_rsosalestype = lt_rsosalestype
+*       ID_RPFROM       = RECA0_DATE-MIN
+        id_rpto         = sy-datum "r_viewto
+        id_typeofreport = abap_false "r_type
+        id_selecttype   = i_ttype "'02' " 04 r_select
+        if_enqueue      = abap_false "gf_enqueue
+        io_msglist      = lo_msglist
+      receiving
+        ro_instance     = lo_report_mngr.
+    constants:
+      lc_classname_data type char30    value 'CL_RESR_DATA_REPORT',
+      lc_classname_view type char30    value 'CL_REIS_VIEW_DEFAULT',
+      lc_classname_edit type char30    value 'CL_REIS_VIEW_EDIT',
+      lc_reportid       type reisrepid value 'SR_REPORT'.
+    data:
+      lo_data_specific type ref to cl_resr_data_report,
+*   model and view container
+      lo_data          type ref to cl_reis_data.
+    create object lo_data
+     type
+     (lc_classname_data)
+     exporting
+       id_reportid         = lc_reportid.
+
+
+    try.
+        lo_data_specific ?= lo_data.
+        lo_data_specific->set_data_mngr( lo_report_mngr ).
+        call method lo_data_specific->get_data
+          exceptions
+            error  = 1
+            others = 2.
+        if sy-subrc <> 0.
+*        mac_symsg_send_as_type 'S'.
+          return.
+        endif.
+        field-symbols:
+          <fs_lisx>  type re_t_report_x,
+          <lt_listx> type standard table,
+          <lt_list>  type standard table,
+          <fs_lis>   type resr_report_s.
+        assign lo_data->mr_list_display->* to <lt_listx>.
+        move-corresponding <lt_listx> to lt_listx.
+        if i_ttype is not supplied or i_ttype is initial .
+          append lines of lt_listx to gt_listx.
+        endif.
+        assign lo_data->mr_list->* to <lt_list>.
+        data bapi_re type bapi_re_sales_rep_int.
+        data bapi_re_dat  type  bapi_re_sales_rep_dat.
+
+        clear sales_rep.
+        loop at <lt_list> assigning <fs_lis>.
+          read table gt_excel into data(ls_excel) with key bukrs = et_vicncn-bukrs recnnr = et_vicncn-recnnr  validfrom = <fs_lis>-validfrom validto = <fs_lis>-validto binary search.
+          if sy-subrc eq 0.
+            <fs_lis>-quantity = ls_excel-quantity.
+            <fs_lis>-salesunit = ls_excel-salesunit.
+            <fs_lis>-salescurr = ls_excel-salescurr.
+            <fs_lis>-net_sales = ls_excel-gross_sales.
+*          <fs_lis>-quantity = 10.
+*          <fs_lis>-net_sales = 256.
+          move-corresponding <fs_lis> to bapi_re.
+          call function 'CONV_TO_RE_SALES_REP_DAT'
+            exporting
+              bapi_re_sales_rep_int = bapi_re
+            changing
+              bapi_re_sales_rep_dat = bapi_re_dat.
+          append bapi_re_dat to sales_rep.
+          append <fs_lis> to gt_list.
+*          else.
+**            <fs_lis>-no_sales = abap_true.
+*
+          endif.
+
+        endloop.
+      catch cx_sy_move_cast_error..
+    endtry.
+  endmethod.
+
+  method call_bapi.
+    clear return.
+    call function 'BAPI_RE_SALES_REP_REPORT'
+      exporting
+        compcode       = et_vicncn-bukrs
+        contractnumber = et_vicncn-recnnr
+        test_run       = ''
+      tables
+        sales_rep      = sales_rep
+        return         = return.
+
+    call function 'BAPI_TRANSACTION_COMMIT'
+      exporting
+        wait = abap_true
+*     IMPORTING
+*       RETURN        =
+      .
+    append lines of return to gt_return.
+*    me->show_log( i_t_return = return ).
+  endmethod.
+  method display_data.
+    data: lo_gr_alv       type ref to cl_salv_table, " Variables for ALV properties
+          lo_gr_functions type ref to cl_salv_functions_list.
+
+*  data: lo_event_handler type ref to cl_handler, " Variables for events
+*        lo_events        type ref to cl_salv_events_table.
+
+    data: lo_grid        type ref to cl_salv_form_layout_grid, " Variables for header
+          lo_layout_logo type ref to cl_salv_form_layout_logo,
+          lo_content     type ref to cl_salv_form_element,
+          lv_title       type string,
+          lv_rows        type string.
+
+    data: lo_layout type ref to cl_salv_layout, " Variables for enabling Save button
+          lv_key    type salv_s_layout_key.
+
+    data: lo_display type ref to cl_salv_display_settings. " Variable for layout settings
+
+    data: lo_selections type ref to cl_salv_selections, " Variables for selection mode and column properties
+          lo_columns    type ref to cl_salv_columns,
+          lo_column     type ref to cl_salv_column_table.
+
+* Create the ALV object
+    try.
+        call method cl_salv_table=>factory
+          importing
+            r_salv_table = lo_gr_alv
+          changing
+            t_table      = gt_listx.
+      catch cx_salv_msg.
+    endtry.
+
+* Let's show all default buttons of ALV
+    lo_gr_functions = lo_gr_alv->get_functions( ).
+    lo_gr_functions->set_all( abap_true ).
+
+* Fit the columns
+    lo_columns = lo_gr_alv->get_columns( ).
+    lo_columns->set_optimize( 'X' ).
+
+* Create header
+    describe table gt_listx lines lv_rows.
+    concatenate 'Número de registros: ' lv_rows into lv_title separated by space.
+
+*  concatenate 'Number of lv_rows: ' lv_rows into lv_title separated by space.
+
+    create object lo_grid.
+    create object lo_layout_logo.
+    lo_grid->create_label( row = 1 column = 1 text = lv_title tooltip = lv_title ).
+    lo_layout_logo->set_left_content( lo_grid ).
+    lo_content = lo_layout_logo.
+    lo_gr_alv->set_top_of_list( lo_content ).
+
+* Apply zebra style to lv_rows
+    lo_display = lo_gr_alv->get_display_settings( ).
+    lo_display->set_striped_pattern( cl_salv_display_settings=>true ).
+
+* Enable the save layout buttons
+    lv_key-report = sy-repid.
+    lo_layout = lo_gr_alv->get_layout( ).
+    lo_layout->set_key( lv_key ).
+    lo_layout->set_save_restriction( if_salv_c_layout=>restrict_none ).
+    lo_layout->set_default( abap_true ).
+
+** Register events
+*  lo_events = lo_gr_alv->get_event( ).
+*  create object lo_event_handler.
+*  set handler lo_event_handler->on_double_click for lo_events.
+
+* Enable cell selection mode
+    lo_selections = lo_gr_alv->get_selections( ).
+    lo_selections->set_selection_mode( if_salv_c_selection_mode=>row_column ).
+
+*  try.
+*      lo_column ?= lo_columns->get_column( 'BUKRS' ). "
+*      lo_column->set_visible( if_salv_c_bool_sap=>true ).
+*      lo_column->set_long_text( 'MyTitle' ).
+*      lo_column->set_medium_text( 'MyTitle' ).
+*      lo_column->set_short_text( 'MyTitle' ).
+*    catch cx_salv_not_found.
+*    catch cx_salv_existing.
+*    catch cx_salv_data_error.
+*  endtry.
+
+    lo_gr_alv->display( ).
+  endmethod.
+  method validate_excel.
+    data ls_return type bapiret2.
+    loop at gt_excel assigning field-symbol(<fs_excel>).
+      clear ls_return.
+      ls_return-message_v2 = sy-tabix.
+      <fs_excel>-recnnr = |{ <fs_excel>-recnnr alpha = in }|.
+      if <fs_excel>-quantity is not initial and <fs_excel>-gross_sales is not initial.
+*        ls_return-message_v2 = sy-tabix.
+        concatenate 'Fila' ls_return-message_v2 text-007 into ls_return-message.
+        ls_return-id         = '0'.
+        ls_return-number     = '001'.
+        ls_return-type       = 'E'.
+        ls_return-message_v1 = text-007.
+*      ls_return-message_v2 = TEXT-007.
+*      ls_return-message_v3 = lv_bukrs.
+*      ls_return-message_v4 = TEXT-008.
+
+        append ls_return to me->gt_return.
+      endif.
+      if <fs_excel>-recntype eq 'LI01' and <fs_excel>-quantity is initial.
+        concatenate 'Fila' ls_return-message_v2 text-008 into ls_return-message.
+        ls_return-id         = '0'.
+        ls_return-number     = '001'.
+        ls_return-type       = 'E'.
+        ls_return-message_v1 = text-008.
+*      ls_return-message_v2 = TEXT-007.
+*      ls_return-message_v3 = lv_bukrs.
+*      ls_return-message_v4 = TEXT-008.
+
+        append ls_return to me->gt_return.
+
+      endif.
+      if <fs_excel>-recntype eq 'LI02' and <fs_excel>-gross_sales is initial.
+        concatenate 'Fila' ls_return-message_v2 text-009 into ls_return-message.
+        ls_return-id         = '0'.
+        ls_return-number     = '001'.
+        ls_return-type       = 'E'.
+        ls_return-message_v1 = text-009.
+*      ls_return-message_v2 = TEXT-007.
+*      ls_return-message_v3 = lv_bukrs.
+*      ls_return-message_v4 = TEXT-008.
+
+        append ls_return to me->gt_return.
+
+      endif.
+    endloop.
+    delete gt_excel where bukrs ne gv_bukrs.
+*    delete gt_excel where recnnr ne gv_recnnr.
+    sort gt_excel by bukrs recnnr validfrom validto.
+  endmethod.
+  method show_log.
+*---Variables locales
+    data: lv_object    type balobj_d,
+          lv_subobject type balsubobj,
+          lv_id        type balnrext.
+
+    data(lo_log) = new zcl_bclog(
+        i_object    = lv_object
+        i_subobject = lv_subobject
+        i_prog      = sy-cprog
+        i_id        = lv_id ).
+
+*---Add Table with messages
+    lo_log->add_t_message_bapiret( i_t_return ).
+*---Show Log
+    lo_log->show_log( ).
+  endmethod.
+
+  method process_in_job.
+    data gtt_excel type STANDARD TABLE OF me->ltp_data_excel.
+    data: lv_jobname    type tbtcjob-jobname,
+          lv_jobcount   type tbtcjob-jobcount,
+          lv_relaseflag type btch0000-char1.
+*          lv_object     type xstring.
+
+    lv_jobname = |{ sy-tcode }-{ sy-uname }-{ sy-datum }-{ sy-uzeit }|.
+
+    call function 'JOB_OPEN'
+      exporting
+        jobname          = lv_jobname
+        sdlstrtdt        = sy-datum
+        sdlstrttm        = sy-uzeit
+      importing
+        jobcount         = lv_jobcount
+      exceptions
+        cant_create_job  = 1
+        invalid_job_data = 2
+        jobname_missing  = 3
+        others           = 4.
+    if sy-subrc eq 0.
+*      call transformation id source in = me result xml lv_object.
+       CALL TRANSFORMATION id_indent SOURCE me = me->gt_excel RESULT XML DATA(lv_object).
+       call transformation id_indent source xml lv_object result me = gtt_excel.
+
+      submit zre_carga_consumo_contrato with p_bukrs = gv_bukrs with p_file = gv_localfile with p_object = lv_object user sy-uname and return
+      via job lv_jobname number lv_jobcount.
+      if sy-subrc eq 0.
+        call function 'JOB_CLOSE'
+          exporting
+            jobcount             = lv_jobcount
+            jobname              = lv_jobname
+            strtimmed            = abap_true
+          importing
+            job_was_released     = lv_relaseflag
+          exceptions
+            cant_start_immediate = 1
+            invalid_startdate    = 2
+            jobname_missing      = 3
+            job_close_failed     = 4
+            job_nosteps          = 5
+            job_notex            = 6
+            lock_failed          = 7
+            invalid_target       = 8
+            invalid_time_zone    = 9
+            others               = 10.
+        if sy-subrc eq 0.
+          message |{ text-010 } { lv_jobname } { text-011 }| type 'S'.
+        else.
+          message id sy-msgid type sy-msgty number sy-msgno
+                with sy-msgv1 sy-msgv2 sy-msgv3 sy-msgv4.
+        endif.
+      endif.
+    else.
+      message id sy-msgid type sy-msgty number sy-msgno
+            with sy-msgv1 sy-msgv2 sy-msgv3 sy-msgv4.
+    endif.
+  endmethod.
+endclass.
