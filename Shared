@@ -829,3 +829,50 @@ CLASS ZCL_BCLOG IMPLEMENTATION.
     ENDIF.
   ENDMETHOD.
 ENDCLASS.
+*****************************
+****************************
+****************************
+****************************
+
+*&---------------------------------------------------------------------*
+*& Report z_t093b_update_abgja
+*&---------------------------------------------------------------------*
+*& Correction report to rectify inconsistent closed fiscal years
+*&---------------------------------------------------------------------*
+REPORT z_t093b_update_abgja.
+
+TABLES t093b.
+
+SELECTION-SCREEN BEGIN OF BLOCK bl1 WITH FRAME TITLE TEXT-bl1.
+  SELECT-OPTIONS: s_bukrs FOR t093b-bukrs.
+SELECTION-SCREEN END OF BLOCK bl1.
+
+SELECTION-SCREEN BEGIN OF BLOCK bl3 WITH FRAME TITLE TEXT-bl3.
+  PARAMETERS p_test TYPE rarep-testlauf DEFAULT abap_on.
+SELECTION-SCREEN END OF BLOCK bl3.
+
+PARAMETERS: p_abgja TYPE gjahr OBLIGATORY.
+
+END-OF-SELECTION.
+
+  SELECT * FROM t093b INTO TABLE @DATA(lt_table)
+  WHERE bukrs IN @s_bukrs[]
+  AND abgja LE '1000'
+  AND abgja NE ''.
+
+  IF p_test IS INITIAL.
+
+    UPDATE t093b
+    SET abgja = @p_abgja
+         WHERE bukrs IN @s_bukrs[] AND
+                        abgja LE '1000' AND
+                        abgja NE ''.
+  ENDIF.
+
+  IF p_test IS NOT INITIAL.
+    WRITE:/ 'Test Run'.
+  ENDIF.
+
+  LOOP AT lt_table INTO DATA(ls_table).
+    WRITE:/ 'The closed fiscal year of the Company Code', ls_table-bukrs,  ', Depreciation Area', ls_table-afabe, 'has been adjusted to ', p_abgja.
+  ENDLOOP.
